@@ -1,1 +1,20 @@
-<p>TODO: posts list</p>
+<% content_for :title, "Micro Reddit" %>
+
+<p class="page-header">All Posts</p>
+
+<% if @posts.empty? %>
+  <p class="empty">No posts yet. Be the first to post!</p>
+<% else %>
+  <% @posts.each do |post| %>
+    <div class="card">
+      <div class="post-title">
+        <%= link_to post.title, post_path(post) %>
+      </div>
+      <div class="post-meta">
+        posted by <%= link_to post.user.username, user_path(post.user) %> &middot;
+        <%= post.comments.count %> comment<%= "s" if post.comments.count != 1 %> &middot;
+        <%= time_ago_in_words(post.created_at) %> ago
+      </div>
+    </div>
+  <% end %>
+<% end %>

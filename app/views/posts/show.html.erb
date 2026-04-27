@@ -1,1 +1,50 @@
-<p>TODO: post detail</p>
+<% content_for :title, @post.title %>
+
+<div class="card">
+  <div class="post-title" style="font-size:1.2rem;"><%= @post.title %></div>
+  <div class="post-meta">
+    posted by <%= link_to @post.user.username, user_path(@post.user) %> &middot;
+    <%= time_ago_in_words(@post.created_at) %> ago
+  </div>
+  <div class="post-body"><%= @post.body %></div>
+  <div class="actions">
+    <%= link_to "← Back to posts", posts_path, class: "btn btn-secondary" %>
+    <%= button_to "Delete", post_path(@post), method: :delete,
+        class: "btn btn-danger",
+        data: { turbo_confirm: "Delete this post and all its comments?" } %>
+  </div>
+</div>
+
+<p class="section-title"><%= @post.comments.count %> Comment<%= "s" if @post.comments.count != 1 %></p>
+
+<% if @post.comments.empty? %>
+  <p class="empty">No comments yet.</p>
+<% else %>
+  <% @post.comments.each do |comment| %>
+    <div class="comment">
+      <div class="comment-body"><%= comment.body %></div>
+      <div class="comment-meta">
+        by <%= link_to comment.user.username, user_path(comment.user) %> &middot;
+        <%= time_ago_in_words(comment.created_at) %> ago &middot;
+        <%= button_to "delete", post_comment_path(@post, comment), method: :delete,
+            style: "background:none;border:none;color:#ff4500;cursor:pointer;font-size:0.78rem;padding:0;" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<p class="section-title">Leave a Comment</p>
+<div class="form-card">
+  <%= form_with url: post_comments_path(@post) do |f| %>
+    <div class="field">
+      <%= f.label :user_id, "Post as" %>
+      <%= f.select :user_id, User.order(:username).pluck(:username, :id),
+          { prompt: "Select user..." }, { class: "" } %>
+    </div>
+    <div class="field">
+      <%= f.label :body, "Comment" %>
+      <%= f.text_area :body, rows: 3, placeholder: "What are your thoughts?" %>
+    </div>
+    <%= f.submit "Comment", class: "btn btn-primary" %>
+  <% end %>
+</div>

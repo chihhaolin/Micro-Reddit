@@ -1,1 +1,35 @@
-<p>TODO: new user form</p>
+<% content_for :title, "Register" %>
+
+<div class="form-card">
+  <h1>Create Account</h1>
+
+  <% if @user.errors.any? %>
+    <div class="error-list">
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @user do |f| %>
+    <div class="field">
+      <%= f.label :username %>
+      <%= f.text_field :username, placeholder: "4–12 characters" %>
+      <p class="field-hint">Must be unique, 4–12 characters.</p>
+    </div>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, placeholder: "you@example.com" %>
+    </div>
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password, placeholder: "6–16 characters" %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Register", class: "btn btn-primary" %>
+      <%= link_to "Cancel", users_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

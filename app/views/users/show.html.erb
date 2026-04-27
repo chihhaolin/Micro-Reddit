@@ -1,1 +1,48 @@
-<p>TODO: user detail</p>
+<% content_for :title, @user.username %>
+
+<div class="card">
+  <div class="page-header"><%= @user.username %></div>
+  <div class="post-meta"><%= @user.email %></div>
+  <div class="post-meta" style="margin-top:0.3rem;">
+    <%= @user.posts.count %> post<%= "s" if @user.posts.count != 1 %> &middot;
+    <%= @user.comments.count %> comment<%= "s" if @user.comments.count != 1 %>
+  </div>
+</div>
+
+<p class="section-title">Posts by <%= @user.username %></p>
+
+<% if @user.posts.empty? %>
+  <p class="empty">No posts yet.</p>
+<% else %>
+  <% @user.posts.order(created_at: :desc).each do |post| %>
+    <div class="card">
+      <div class="post-title">
+        <%= link_to post.title, post_path(post) %>
+      </div>
+      <div class="post-meta">
+        <%= post.comments.count %> comment<%= "s" if post.comments.count != 1 %> &middot;
+        <%= time_ago_in_words(post.created_at) %> ago
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<p class="section-title">Comments by <%= @user.username %></p>
+
+<% if @user.comments.empty? %>
+  <p class="empty">No comments yet.</p>
+<% else %>
+  <% @user.comments.order(created_at: :desc).each do |comment| %>
+    <div class="comment">
+      <div class="comment-body"><%= comment.body %></div>
+      <div class="comment-meta">
+        on <%= link_to comment.post.title, post_path(comment.post) %> &middot;
+        <%= time_ago_in_words(comment.created_at) %> ago
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<div style="margin-top:1rem;">
+  <%= link_to "← All Users", users_path, class: "btn btn-secondary" %>
+</div>
