@@ -1,0 +1,9 @@
+alice:
+  username: alice123
+  email: alice@example.com
+  password: secret1
+
+bob:
+  username: bob456
+  email: bob@example.com
+  password: secret2
