@@ -33,3 +33,17 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+# Playwright MCP runtime cache (snapshots & console logs generated during sessions).
+/.playwright-mcp/
+
+# Local Claude Code settings override (machine-specific, like .env.local).
+/.claude/settings.local.json
+
+# E2E Playwright screenshots (regenerated on each test run).
+/test/e2e_playwright/*.png
+
+# OS and editor artifacts.
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
